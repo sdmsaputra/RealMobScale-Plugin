@@ -87,7 +87,7 @@ public class EntitySpawnPacketHandler extends PacketListenerAbstract {
             float scaleFactor = (float) (baseScaleFactor * biomeMultiplier);
 
             // Store the scale information in the metadata handler
-            metadataHandler.addEntityScale(livingEntity.getUniqueId(), profile, scaleFactor);
+            metadataHandler.addEntityScale(livingEntity.getUniqueId(), livingEntity.getEntityId(), profile, scaleFactor);
 
             // The actual scale data will be sent in the metadata packet that follows
             // This handler ensures we track the entity from the moment it spawns
@@ -95,8 +95,8 @@ public class EntitySpawnPacketHandler extends PacketListenerAbstract {
             if (plugin.getConfigManager().isDebugMode()) {
                 String entityTypeStr = livingEntity.getType().name();
                 String ageInfo = isBabyAnimal(livingEntity) ? "(Baby)" : "(Adult)";
-                plugin.getLogger().info("Spawn packet tracked for " + entityTypeStr + " " + ageInfo +
-                    " (ID: " + entityId + ", Scale: " + scaleFactor + "x)");
+                // Spawn packet tracked for " + entityTypeStr + " " + ageInfo +
+                // " (ID: " + entityId + ", Scale: " + scaleFactor + "x)
             }
 
         } catch (Exception e) {

@@ -78,10 +78,10 @@ public class MobSpawnListener implements Listener {
         LivingEntity baby = (LivingEntity) child;
 
         if (plugin.getConfigManager().isDebugMode()) {
-            plugin.getLogger().info("Baby entity born from breeding: " + baby.getType().name() +
-                " (Parents: " + event.getFather().getType().name() +
-                " + " + event.getMother().getType().name() +
-                ", Location: " + formatLocation(baby.getLocation()) + ")");
+            // Baby entity born from breeding: " + baby.getType().name() +
+            // " (Parents: " + event.getFather().getType().name() +
+            // " + " + event.getMother().getType().name() +
+            // ", Location: " + formatLocation(baby.getLocation()) + ")
         }
 
         // Apply scaling with slightly longer delay for breeding to ensure baby status is set

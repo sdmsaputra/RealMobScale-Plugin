@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.scheduler.BukkitRunnable;
 import com.minekarta.realMobScale.RealMobScale;
 import com.minekarta.realMobScale.data.MobData;
 import com.minekarta.realMobScale.data.ScaleProfile;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * Handles entity metadata packets to ensure smooth visual scaling across all clients
@@ -25,11 +27,13 @@ public class EntityMetadataPacketHandler extends PacketListenerAbstract {
     private final RealMobScale plugin;
     private final ConcurrentHashMap<UUID, ScaleProfile> scaledEntities;
     private final ConcurrentHashMap<UUID, Float> entityScales;
+    private final ConcurrentHashMap<Integer, UUID> entityIdToUUID;
 
     public EntityMetadataPacketHandler(RealMobScale plugin) {
         this.plugin = plugin;
         this.scaledEntities = new ConcurrentHashMap<>();
         this.entityScales = new ConcurrentHashMap<>();
+        this.entityIdToUUID = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -42,7 +46,58 @@ public class EntityMetadataPacketHandler extends PacketListenerAbstract {
             WrapperPlayServerEntityMetadata packet = new WrapperPlayServerEntityMetadata(event);
             int entityId = packet.getEntityId();
 
-            // Find the entity in the server world
+            // TEMPORARY: Disable packet metadata scaling to prevent Network Protocol Error
+            // The scaling will be handled server-side through attributes only
+            return;
+
+            /*
+            // Check if we already have this entity cached to avoid async world access
+            UUID entityUUID = getEntityUUIDById(entityId);
+            if (entityUUID != null && scaledEntities.containsKey(entityUUID)) {
+                // Use cached data if available
+                ScaleProfile profile = scaledEntities.get(entityUUID);
+                Float scaleFactor = entityScales.get(entityUUID);
+
+                if (profile != null && scaleFactor != null) {
+                    // Validate scale factor to prevent protocol errors
+                    if (scaleFactor < 0.1f || scaleFactor > 10.0f || Float.isNaN(scaleFactor) || Float.isInfinite(scaleFactor)) {
+                        // Skip scaling if value is invalid
+                        return;
+                    }
+
+                    // For now, we're disabling packet metadata scaling completely
+                    // This will prevent Network Protocol Error issues
+                    if (plugin.getConfigManager().isDebugMode()) {
+                        plugin.getLogger().info("Packet scaling disabled for entity ID " + entityId + " (using server-side only)");
+                    }
+                    return;
+                }
+            }
+
+            // If not cached, schedule the entity lookup on main thread
+            // Note: We can't modify the packet asynchronously, so we return and let
+            // the next packet handle the scaling once the entity is cached
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    findAndCacheEntity(entityId);
+                }
+            }.runTask(plugin);
+            */
+
+        } catch (Exception e) {
+            plugin.getLogger().warning("Error handling entity metadata packet: " + e.getMessage());
+            if (plugin.getConfigManager().isDebugMode()) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * Find entity by ID and cache its scaling data (must be called on main thread)
+     */
+    private void findAndCacheEntity(int entityId) {
+        try {
             LivingEntity livingEntity = null;
             for (org.bukkit.World world : plugin.getServer().getWorlds()) {
                 for (org.bukkit.entity.Entity entity : world.getEntities()) {
@@ -77,39 +132,32 @@ public class EntityMetadataPacketHandler extends PacketListenerAbstract {
             );
             float scaleFactor = (float) (baseScaleFactor * biomeMultiplier);
 
-            // Store the scale information
-            scaledEntities.put(livingEntity.getUniqueId(), profile);
-            entityScales.put(livingEntity.getUniqueId(), scaleFactor);
-
-            // Modify the metadata to include scaling information
-            List<com.github.retrooper.packetevents.protocol.entity.data.EntityData<?>> metadata =
-                new ArrayList<>(packet.getEntityMetadata());
-
-            // Try to remove existing scale data (index 17 is typically scale in newer versions)
-            metadata.removeIf(data -> data.getIndex() == 17);
-
-            // Add scale metadata using index 17 (common for scale)
-            com.github.retrooper.packetevents.protocol.entity.data.EntityData<?> scaleData =
-                new com.github.retrooper.packetevents.protocol.entity.data.EntityData<>(17,
-                com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes.FLOAT, scaleFactor);
-            metadata.add(scaleData);
-
-            // Update the packet with modified metadata
-            packet.setEntityMetadata(metadata);
+            // Store the scale information for future packets
+            UUID entityUUID = livingEntity.getUniqueId();
+            scaledEntities.put(entityUUID, profile);
+            entityScales.put(entityUUID, scaleFactor);
+            entityIdToUUID.put(entityId, entityUUID);
 
             if (plugin.getConfigManager().isDebugMode()) {
                 String entityTypeStr = livingEntity.getType().name();
                 String ageInfo = isBabyAnimal(livingEntity) ? "(Baby)" : "(Adult)";
-                plugin.getLogger().info("Packet scaling applied to " + entityTypeStr + " " + ageInfo +
+                plugin.getLogger().info("Entity scaling cached for " + entityTypeStr + " " + ageInfo +
                     " (ID: " + entityId + ", Scale: " + scaleFactor + "x)");
             }
 
         } catch (Exception e) {
-            plugin.getLogger().warning("Error handling entity metadata packet: " + e.getMessage());
+            plugin.getLogger().warning("Error caching entity scaling data: " + e.getMessage());
             if (plugin.getConfigManager().isDebugMode()) {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Helper method to find entity UUID by ID (thread-safe)
+     */
+    private UUID getEntityUUIDById(int entityId) {
+        return entityIdToUUID.get(entityId);
     }
 
     /**
@@ -170,6 +218,8 @@ public class EntityMetadataPacketHandler extends PacketListenerAbstract {
     public void removeEntity(UUID entityUUID) {
         scaledEntities.remove(entityUUID);
         entityScales.remove(entityUUID);
+        // Remove from entity ID mapping as well
+        entityIdToUUID.entrySet().removeIf(entry -> entry.getValue().equals(entityUUID));
     }
 
     /**
@@ -192,13 +242,15 @@ public class EntityMetadataPacketHandler extends PacketListenerAbstract {
     public void clearAllEntities() {
         scaledEntities.clear();
         entityScales.clear();
+        entityIdToUUID.clear();
     }
 
     /**
      * Add entity scale information (called by spawn handler)
      */
-    public void addEntityScale(UUID entityUUID, ScaleProfile profile, float scaleFactor) {
+    public void addEntityScale(UUID entityUUID, int entityId, ScaleProfile profile, float scaleFactor) {
         scaledEntities.put(entityUUID, profile);
         entityScales.put(entityUUID, scaleFactor);
+        entityIdToUUID.put(entityId, entityUUID);
     }
 }
