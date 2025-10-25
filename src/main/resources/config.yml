@@ -1,0 +1,194 @@
+# =============================================================================
+# RealMobScale Configuration - Realistic Animal Scaling
+# =============================================================================
+# This plugin scales all Minecraft animals to their real-world sizes
+# Based on actual biological measurements and scientific data
+
+# =============================================================================
+# GENERAL SETTINGS
+# =============================================================================
+settings:
+  # Enable or disable the entire plugin
+  enabled: true
+
+  # Apply scaling to existing mobs when plugin loads/reloads
+  apply-to-existing: false
+
+  # Debug mode - shows detailed information about scaling operations
+  debug: false
+
+  # Performance settings
+  performance:
+    # How often to check for new entities (in ticks)
+    check-interval: 100
+    # Maximum entities to process per tick to avoid lag
+    max-processing-per-tick: 10
+
+# =============================================================================
+# REALISTIC SETTINGS
+# =============================================================================
+realistic:
+  # Enable realistic mode with accurate biological measurements
+  enabled: true
+
+  # Scale baby animals to realistic proportions
+  baby-scaling: true
+
+  # Global multiplier for baby animal sizes (1.0 = normal, 1.2 = 20% larger babies)
+  baby-scale-multiplier: 1.0
+
+  # Apply realistic health based on animal size (square-cube law)
+  realistic-health: true
+
+  # Apply realistic movement speeds based on animal biology
+  realistic-speed: true
+
+  # Apply realistic damage based on animal size and strength
+  realistic-damage: true
+
+  # Show detailed information about each scaled animal
+  show-detailed-info: false
+
+  # Global scale multiplier (1.0 = normal, 2.0 = double size)
+  global-scale-multiplier: 1.0
+
+  # Global health multiplier (1.0 = normal, 2.0 = double health)
+  global-health-multiplier: 1.0
+
+  # Enable size categories in logging
+  enable-size-categories: true
+
+  # Respect world borders when scaling
+  respect-world-borders: true
+
+  # Logging level: DEBUG, INFO, WARNING, SEVERE
+  logging-level: "INFO"
+
+  # Performance mode for large servers
+  performance-mode: false
+
+  # Maximum scaled mobs per chunk
+  max-mobs-per-chunk: 50
+
+# =============================================================================
+# WORLD SETTINGS
+# =============================================================================
+worlds:
+  # Mode: "whitelist" = only scale in listed worlds
+  # Mode: "blacklist" = scale in all worlds except listed ones
+  mode: "whitelist"
+
+  # List of worlds to include/exclude based on mode
+  list:
+    - "world"
+    - "world_nether"
+    - "world_the_end"
+
+# =============================================================================
+# CATEGORY SETTINGS
+# =============================================================================
+categories:
+  # Enable/disable scaling for different categories of creatures
+  animals:
+    enabled: true
+    description: "Domestic and wild animals"
+
+  monsters:
+    enabled: true
+    description: "Hostile creatures and monsters"
+
+  water-creatures:
+    enabled: true
+    description: "Aquatic animals and fish"
+
+  flying-creatures:
+    enabled: true
+    description: "Birds and flying mobs"
+
+  bosses:
+    enabled: true
+    description: "Boss monsters and powerful entities"
+
+# =============================================================================
+# MOB-SPECIFIC SETTINGS
+# =============================================================================
+mobs:
+  # Default setting for all mobs if not overridden
+  enabled-by-default: true
+
+  # Overrides for specific mobs
+  overrides:
+    # Example: Make cows bigger than default
+    # COW:
+    #   enabled: true
+    #   custom-scale: 1.5
+    #   custom-health: 20.0
+
+    # Example: Disable scaling for creepers
+    # CREEPER:
+    #   enabled: false
+
+    # Baby camel size adjustment (for better visibility)
+    CAMEL:
+      enabled: true
+      # Baby camels are scaled larger for better gameplay visibility
+      # Adult camels: 2.1m real height, 0.95x scale
+      # Baby camels will be 60% of adult size instead of 45%
+      custom-baby-scale: 0.6
+
+# =============================================================================
+# COMPATIBILITY SETTINGS
+# =============================================================================
+compatibility:
+  # Respect other plugins that modify entities
+  respect-other-plugins: true
+
+  # List of plugins to check for compatibility
+  checked-plugins:
+    - "MythicMobs"
+    - "Citizens"
+    - "ItemsAdder"
+    - "CustomMobs"
+
+# =============================================================================
+# EXAMPLE SCALE DATA
+# =============================================================================
+# Here are some examples of real-world sizes used by the plugin:
+#
+# Farm Animals:
+# - Cow: 1.4m shoulder height, 650kg
+# - Pig: 0.8m shoulder height, 200kg
+# - Sheep: 0.9m shoulder height, 80kg
+# - Chicken: 0.35m height, 2.5kg
+#
+# Wild Animals:
+# - Wolf: 0.8m shoulder height, 40kg
+# - Fox: 0.4m shoulder height, 6kg
+# - Polar Bear: 1.5m shoulder height, 450kg
+#
+# Fish:
+# - Salmon: 1.5m length, 15kg
+# - Cod: 1.2m length, 25kg
+# - Tropical Fish: 0.15m length
+#
+# Small Creatures:
+# - Bee: 0.015m length
+# - Spider: 0.05m body length
+# - Silverfish: 0.02m length
+#
+# Large Creatures:
+# - Ender Dragon: 8.0m length
+# - Warden: 3.0m height
+# - Ravager: 2.2m length
+
+# =============================================================================
+# NOTES
+# =============================================================================
+# 1. All scale factors are based on real biological measurements
+# 2. Baby animals are automatically scaled to 30-50% of adult size
+# 3. Health and damage scale with animal size using biomechanical laws
+# 4. Plugin uses PacketEvents for smooth visual scaling
+# 5. Performance mode reduces calculations for better server performance
+#
+# For support and updates, visit: https://minekarta.com
+# =============================================================================

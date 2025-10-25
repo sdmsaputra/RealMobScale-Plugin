@@ -1,0 +1,40 @@
+name: RealMobScale
+version: 1.0.0
+main: com.minekarta.realMobScale.RealMobScale
+api-version: 1.21
+description: Realistic animal scaling based on real-world measurements
+author: Minekarta Studio
+website: https://minekarta.com
+
+depend: [packetevents]
+
+commands:
+  realmobscale:
+    description: Manage RealMobScale settings
+    usage: /<command> <reload|info|stats|apply|toggle>
+    permission: realmobscale.admin
+  prefs:
+    description: Manage your personal scaling preferences
+    usage: /<command> [toggle|mode|multiplier|categories|info|reset]
+    permission: realmobscale.user
+  preferences:
+    description: Manage your personal scaling preferences
+    usage: /<command> [toggle|mode|multiplier|categories|info|reset]
+    permission: realmobscale.user
+
+permissions:
+  realmobscale.*:
+    description: All RealMobScale permissions
+    children:
+      realmobscale.admin: true
+      realmobscale.user: true
+      realmobscale.debug: true
+  realmobscale.admin:
+    description: Admin permissions for RealMobScale
+    default: op
+  realmobscale.user:
+    description: User permissions for RealMobScale
+    default: true
+  realmobscale.debug:
+    description: Debug permissions for RealMobScale
+    default: op
