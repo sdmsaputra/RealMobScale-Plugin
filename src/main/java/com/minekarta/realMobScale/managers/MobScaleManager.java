@@ -80,6 +80,7 @@ public class MobScaleManager {
                 // Store the scale information for packet handling
                 RealMobScale.getInstance().getMetadataHandler().addEntityScale(
                     entity.getUniqueId(),
+                    entity.getEntityId(),
                     profile,
                     scaleFloat
                 );
@@ -89,22 +90,22 @@ public class MobScaleManager {
                     entity.getAttribute(org.bukkit.attribute.Attribute.SCALE).setBaseValue(scaleFloat);
                 }
 
-                RealMobScale.getInstance().getLogger().info("Visual scaling applied to " + entityType + " " + ageInfo +
-                    " - " + profile.getDescription() + " (Real: " + profile.getRealWorldHeight() +
-                    "m, Scale: " + scaleFactor + "x) using PacketEvents + SCALE attribute");
+                // Visual scaling applied to " + entityType + " " + ageInfo +
+                // " - " + profile.getDescription() + " (Real: " + profile.getRealWorldHeight() +
+                // "m, Scale: " + scaleFactor + "x) using PacketEvents + SCALE attribute
             } else {
                 // Fallback: use only the built-in scale attribute
                 if (entity.getAttribute(org.bukkit.attribute.Attribute.SCALE) != null) {
                     entity.getAttribute(org.bukkit.attribute.Attribute.SCALE).setBaseValue(scaleFloat);
-                    RealMobScale.getInstance().getLogger().info("Visual scaling applied to " + entityType + " " + ageInfo +
-                        " - " + profile.getDescription() + " (Real: " + profile.getRealWorldHeight() +
-                        "m, Scale: " + scaleFactor + "x) using SCALE attribute only");
+                    // Visual scaling applied to " + entityType + " " + ageInfo +
+                    // " - " + profile.getDescription() + " (Real: " + profile.getRealWorldHeight() +
+                    // "m, Scale: " + scaleFactor + "x) using SCALE attribute only
                 } else {
                     // Last resort: try to use older methods
                     try {
                         entity.teleport(entity.getLocation().clone().multiply(scaleFloat));
-                        RealMobScale.getInstance().getLogger().warning("Visual scaling applied to " + entityType + " " + ageInfo +
-                            " (scale: " + scaleFactor + ") using transformation fallback");
+                        // Visual scaling applied to " + entityType + " " + ageInfo +
+                        // " (scale: " + scaleFactor + ") using transformation fallback
                     } catch (Exception fallbackException) {
                         RealMobScale.getInstance().getLogger().severe("Could not apply visual scaling to " + entityType +
                             " - All methods failed, using default size");
@@ -169,8 +170,8 @@ public class MobScaleManager {
             entity.getAttribute(Attribute.MAX_HEALTH).setBaseValue(newHealth);
             entity.setHealth(newHealth);
 
-            RealMobScale.getInstance().getLogger().info("Health adjusted for " + entityType + " " + ageInfo +
-                ": " + String.format("%.1f", baseHealth) + " → " + String.format("%.1f", newHealth) + " HP");
+            // Health adjusted for " + entityType + " " + ageInfo +
+            // ": " + String.format("%.1f", baseHealth) + " → " + String.format("%.1f", newHealth) + " HP
         }
 
         // Adjust damage based on size
@@ -180,8 +181,8 @@ public class MobScaleManager {
             double newDamage = baseDamage * damageMultiplier;
             entity.getAttribute(Attribute.ATTACK_DAMAGE).setBaseValue(newDamage);
 
-            RealMobScale.getInstance().getLogger().info("Damage adjusted for " + entityType + " " + ageInfo +
-                ": " + String.format("%.1f", baseDamage) + " → " + String.format("%.1f", newDamage) + " DMG");
+            // Damage adjusted for " + entityType + " " + ageInfo +
+            // ": " + String.format("%.1f", baseDamage) + " → " + String.format("%.1f", newDamage) + " DMG
         }
 
         // Adjust movement speed based on size (smaller = faster, larger = slower)
@@ -197,8 +198,8 @@ public class MobScaleManager {
             double newSpeed = baseSpeed * speedMultiplier;
             entity.getAttribute(Attribute.MOVEMENT_SPEED).setBaseValue(newSpeed);
 
-            RealMobScale.getInstance().getLogger().info("Speed adjusted for " + entityType + " " + ageInfo +
-                ": " + String.format("%.3f", baseSpeed) + " → " + String.format("%.3f", newSpeed) + " m/s");
+            // Speed adjusted for " + entityType + " " + ageInfo +
+            // ": " + String.format("%.3f", baseSpeed) + " → " + String.format("%.3f", newSpeed) + " m/s
         }
     }
     
