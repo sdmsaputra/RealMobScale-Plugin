@@ -1,8 +1,8 @@
 name: RealMobScale
-version: 1.0.0
+version: 1.1.0
 main: com.minekarta.realMobScale.RealMobScale
 api-version: 1.21
-description: Realistic animal scaling based on real-world measurements
+description: Real-world animal scaling based on actual biological measurements - only real animals!
 author: Minekarta Studio
 website: https://minekarta.com
 

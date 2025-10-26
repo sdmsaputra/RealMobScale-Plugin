@@ -1,6 +1,6 @@
 # 🦊 RealMobScale
 
-![Plugin Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Plugin Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
 ![Minecraft Version](https://img.shields.io/badge/MC-1.21-green.svg)
 ![License](https://img.shields.io/badge/license-MIT-purple.svg)
 ![Platform](https://img.shields.io/badge/platform-PaperMC-orange.svg)
@@ -300,6 +300,50 @@ MIT License - Free to use, modify, and distribute
 
 ---
 
+## 📝 Changelog
+
+### Version 1.1.0 - Real Animals Only Release
+**🎯 Major Update: Focus on Real-World Animals**
+
+#### 🔄 **Major Changes**
+- ✅ **Removed all fictional creatures** (35+ mobs removed)
+- 🦇 **Improved bat visibility** - 3x larger for better gameplay
+- 📊 **Updated categories** - removed monsters/bosses, added arthropods
+- 🌍 **Real-world focus** - only animals that exist in nature
+
+#### 🗑️ **Removed Creatures**
+- 🧟 Zombie variants (Zombie, Drowned, Husk, etc.)
+- 💀 Skeleton variants (Skeleton, Wither Skeleton, etc.)
+- 🧙‍♂️ Humanoids (Witch, Illagers, etc.)
+- 🔥 Nether creatures (Ghast, Blaze, Piglins, etc.)
+- 👻 Supernatural mobs (Phantom, Enderman, Warden, etc.)
+- 🐉 Bosses (Ender Dragon, Wither, Elder Guardian)
+- 🤖 Golems (Iron Golem, Snow Golem)
+- 🎈 Slimes and fictional creatures
+
+#### ✨ **What's New**
+- 🦊 **36 real-world animals** with scientifically accurate scaling
+- 🐛 **New arthropods category** for insects and spiders
+- 🦇 **Enhanced bat visibility** (0.25m wingspan, scaled for gameplay)
+- 📚 **Updated documentation** focusing on real animals only
+- ⚡ **Optimized performance** with fewer entities to process
+
+#### 📊 **Stats**
+- **Before**: 71 mobs (including fictional)
+- **After**: 36 real-world animals
+- **Realism**: 100% real animals only
+- **Performance**: Improved with reduced entity count
+
+---
+
+### Version 1.0.0 - Initial Release
+- ✅ Basic mob scaling implementation
+- 🦊 40+ mob types with realistic sizes
+- ⚙️ Comprehensive configuration system
+- 🌍 Multi-world support
+
+---
+
 ## 🌟 Quick Start Summary
 
 1. **Download** RealMobScale.jar
@@ -312,4 +356,4 @@ MIT License - Free to use, modify, and distribute
 ---
 
 *Made with ❤️ by Minekarta Studio*
-*Version 1.0.0 - Scientifically accurate real-world animal scaling for Minecraft servers*
+*Version 1.1.0 - Scientifically accurate real-world animal scaling for Minecraft servers*
