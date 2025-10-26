@@ -222,10 +222,6 @@ public class ConfigManager {
         return getConfig().getBoolean("categories.animals.enabled", true);
     }
 
-    public boolean areMonstersEnabled() {
-        return getConfig().getBoolean("categories.monsters.enabled", true);
-    }
-
     public boolean areWaterCreaturesEnabled() {
         return getConfig().getBoolean("categories.water-creatures.enabled", true);
     }
@@ -234,8 +230,8 @@ public class ConfigManager {
         return getConfig().getBoolean("categories.flying-creatures.enabled", true);
     }
 
-    public boolean areBossesEnabled() {
-        return getConfig().getBoolean("categories.bosses.enabled", true);
+    public boolean areArthropodsEnabled() {
+        return getConfig().getBoolean("categories.arthropods.enabled", true);
     }
 
     // ==================== UTILITY METHODS ====================
@@ -250,29 +246,18 @@ public class ConfigManager {
 
         // Check category settings
         if (isAnimal(type) && !areAnimalsEnabled()) return false;
-        if (isMonster(type) && !areMonstersEnabled()) return false;
         if (isWaterCreature(type) && !areWaterCreaturesEnabled()) return false;
         if (isFlyingCreature(type) && !areFlyingCreaturesEnabled()) return false;
-        if (isBoss(type) && !areBossesEnabled()) return false;
+        if (isArthropod(type) && !areArthropodsEnabled()) return false;
 
         return true;
     }
 
     private boolean isAnimal(EntityType type) {
         return switch (type.name()) {
-            case "COW", "PIG", "SHEEP", "CHICKEN", "MOOSHROOM", "RABBIT", "HORSE", "DONKEY", "MULE",
+            case "COW", "PIG", "SHEEP", "CHICKEN", "RABBIT", "HORSE", "DONKEY", "MULE",
                  "LLAMA", "TRADER_LLAMA", "CAMEL", "CAT", "OCELOT", "WOLF", "FOX", "PARROT",
                  "TURTLE", "AXOLOTL", "FROG", "GOAT", "PANDA", "POLAR_BEAR" -> true;
-            default -> false;
-        };
-    }
-
-    private boolean isMonster(EntityType type) {
-        return switch (type.name()) {
-            case "ZOMBIE", "SKELETON", "CREEPER", "SPIDER", "CAVE_SPIDER", "ENDERMAN", "WITCH",
-                 "SILVERFISH", "ENDERMITE", "SLIME", "MAGMA_CUBE", "BLAZE", "GHAST", "PHANTOM",
-                 "DROWNED", "HUSK", "STRAY", "PILLAGER", "VINDICATOR", "EVOKER", "ILLUSIONER",
-                 "RAVAGER", "WARDEN", "PIGLIN", "PIGLIN_BRUTE", "HOGLIN", "ZOGLIN", "ZOMBIFIED_PIGLIN" -> true;
             default -> false;
         };
     }
@@ -280,21 +265,21 @@ public class ConfigManager {
     private boolean isWaterCreature(EntityType type) {
         return switch (type.name()) {
             case "COD", "SALMON", "TROPICAL_FISH", "PUFFERFISH", "SQUID", "GLOW_SQUID",
-                 "DOLPHIN", "TURTLE", "GUARDIAN", "ELDER_GUARDIAN", "AXOLOTL" -> true;
+                 "DOLPHIN", "TURTLE", "AXOLOTL" -> true;
             default -> false;
         };
     }
 
     private boolean isFlyingCreature(EntityType type) {
         return switch (type.name()) {
-            case "BAT", "PARROT", "BEE", "PHANTOM", "GHAST", "BLAZE", "ENDER_DRAGON", "WITHER" -> true;
+            case "BAT", "PARROT", "BEE" -> true;
             default -> false;
         };
     }
 
-    private boolean isBoss(EntityType type) {
+    private boolean isArthropod(EntityType type) {
         return switch (type.name()) {
-            case "ENDER_DRAGON", "WITHER", "ELDER_GUARDIAN", "WARDEN" -> true;
+            case "SPIDER", "CAVE_SPIDER", "SILVERFISH", "BEE" -> true;
             default -> false;
         };
     }

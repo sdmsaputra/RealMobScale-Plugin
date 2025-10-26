@@ -1,8 +1,9 @@
 # =============================================================================
 # RealMobScale Configuration - Realistic Animal Scaling
 # =============================================================================
-# This plugin scales all Minecraft animals to their real-world sizes
+# This plugin scales real-world Minecraft animals to their actual sizes
 # Based on actual biological measurements and scientific data
+# Only includes animals that exist in the real world
 
 # =============================================================================
 # GENERAL SETTINGS
@@ -93,21 +94,17 @@ categories:
     enabled: true
     description: "Domestic and wild animals"
 
-  monsters:
-    enabled: true
-    description: "Hostile creatures and monsters"
-
   water-creatures:
     enabled: true
     description: "Aquatic animals and fish"
 
   flying-creatures:
     enabled: true
-    description: "Birds and flying mobs"
+    description: "Birds and flying mammals"
 
-  bosses:
+  arthropods:
     enabled: true
-    description: "Boss monsters and powerful entities"
+    description: "Insects, spiders, and other arthropods"
 
 # =============================================================================
 # MOB-SPECIFIC SETTINGS
@@ -156,7 +153,7 @@ compatibility:
 # Here are some examples of real-world sizes used by the plugin:
 #
 # Farm Animals:
-# - Cow: 1.4m shoulder height, 650kg
+# - Cow: 1.5m shoulder height, 650kg
 # - Pig: 0.8m shoulder height, 200kg
 # - Sheep: 0.9m shoulder height, 80kg
 # - Chicken: 0.35m height, 2.5kg
@@ -175,11 +172,12 @@ compatibility:
 # - Bee: 0.015m length
 # - Spider: 0.05m body length
 # - Silverfish: 0.02m length
+# - Bat: 0.25m wingspan (scaled for visibility)
 #
-# Large Creatures:
-# - Ender Dragon: 8.0m length
-# - Warden: 3.0m height
-# - Ravager: 2.2m length
+# Large Animals:
+# - Horse: 1.6m shoulder height, 500kg
+# - Camel: 2.1m shoulder height, 600kg
+# - Llama: 1.8m shoulder height, 200kg
 
 # =============================================================================
 # NOTES
